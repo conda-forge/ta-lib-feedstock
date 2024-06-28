@@ -403,4 +403,5 @@ Feedstock Maintainers
 * [@gerrymanoim](https://github.com/gerrymanoim/)
 * [@llllllllll](https://github.com/llllllllll/)
 * [@richafrank](https://github.com/richafrank/)
+* [@sanurielf](https://github.com/sanurielf/)
 
