@@ -1,5 +1,5 @@
 {% set name = "ta-lib" %}
-{% set version = "0.4.28" %}
+{% set version = "0.4.32" %}
 
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/TA-Lib-{{ version }}.tar.gz
-    sha256: 3f03847162e003e0d92a8a89d9e8b7192dfe1235507e2f7d1d0e66cd5af7a48e
+    sha256: fb74c323217bead847a045c97aa17bfd147aef17e20a75857ea0f8f7ee7cdaa0
 
 build:
   number: 0
@@ -21,6 +21,7 @@ requirements:
     - cython                                 # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
     - {{ compiler('c') }}
+    - {{ stdlib("c") }}
   host:
     - cython
     - libta-lib
