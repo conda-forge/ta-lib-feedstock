@@ -11,7 +11,7 @@ source:
     sha256: f2a5002ff2359c370316066f28d870d8bbbaf38bb5ada23167675fe231874c93
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
@@ -30,7 +30,6 @@ requirements:
     - python
   run:
     - python
-    - {{ pin_compatible('numpy') }}
 
 test:
   imports:
