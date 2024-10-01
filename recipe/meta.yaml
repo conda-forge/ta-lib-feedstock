@@ -20,12 +20,13 @@ requirements:
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
     - numpy                                  # [build_platform != target_platform]
+    - libta-lib
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
   host:
     - cython
-    - libta-lib
     - numpy
+    - libta-lib
     - pip
     - python
   run:
