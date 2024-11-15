@@ -1,5 +1,5 @@
 {% set name = "ta-lib" %}
-{% set version = "0.4.32" %}
+{% set version = "0.5.1" %}
 
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/TA-Lib-{{ version }}.tar.gz
-    sha256: fb74c323217bead847a045c97aa17bfd147aef17e20a75857ea0f8f7ee7cdaa0
+    sha256: 2beeacb7f54212d7c5a7a56bcdd65094d8d6d02f0a732246764c0a96172c9d2a
 
 build:
   number: 0
