@@ -7,11 +7,11 @@ package:
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/TA-Lib-{{ version }}.tar.gz
+  - url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/TA-Lib-{{ version }}.tar.gz
     sha256: 2beeacb7f54212d7c5a7a56bcdd65094d8d6d02f0a732246764c0a96172c9d2a
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
