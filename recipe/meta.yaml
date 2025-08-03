@@ -1,33 +1,52 @@
 {% set name = "ta-lib" %}
-{% set version = "0.5.1" %}
-
+{% set version = "0.6.4" %}
+{% set compiler = compiler %}
+{% set stdlib = stdlib %}
+{% set pin_compatible = pin_compatible %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/TA-Lib-{{ version }}.tar.gz
-    sha256: 2beeacb7f54212d7c5a7a56bcdd65094d8d6d02f0a732246764c0a96172c9d2a
+  - git_url: https://github.com/TA-Lib/ta-lib-python.git
+    git_tag: TA_Lib-{{ version }}
 
 build:
   number: 0
-  script: {{ PYTHON }} -m pip install . -vv
+  script:
+    - export TA_LIBRARY_PATH=$PREFIX/lib                           # [unix]
+    - export TA_INCLUDE_PATH=$PREFIX/include                       # [unix]
+    - export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig                 # [unix]
+    # On Windows, TA-Lib C sources include headers as "ta-lib/ta_defs.h".
+    # The libta-lib package installs headers flat under Library/include.
+    # Create a transient include subtree with ta-lib\*.h to satisfy includes.
+    - if not exist "%SRC_DIR%\include\ta-lib" mkdir "%SRC_DIR%\include\ta-lib"   # [win]
+    - copy /Y "%LIBRARY_PREFIX%\include\ta_*.h" "%SRC_DIR%\include\ta-lib\"      # [win]
+    - set "TA_INCLUDE_PATH=%SRC_DIR%\include;%LIBRARY_PREFIX%\include"           # [win]
+    - set "TA_LIBRARY_PATH=%LIBRARY_PREFIX%\lib"                                 # [win]
+    # Also help MSVC find headers/libs via standard INCLUDE/LIB search paths.
+    - set "INCLUDE=%SRC_DIR%\include;%LIBRARY_PREFIX%\include;%INCLUDE%"         # [win]
+    - set "LIB=%LIBRARY_PREFIX%\lib;%LIB%"                                       # [win]
+    - {{ PYTHON }} -m pip install . -vv --no-build-isolation
 
 requirements:
   build:
     - python                                 # [build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - cython                                 # [build_platform != target_platform]
-    - {{ pin_compatible('numpy', lower_bound='2.0', upper_bound='3.0') }}                                  # [build_platform != target_platform]
+    - {{ pin_compatible('numpy', lower_bound='2.0', upper_bound='3.0') }}        # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ stdlib("c") }}
+    - pkg-config
+    - libta-lib >=0.6.4
   host:
     - cython
-    - libta-lib
+    - libta-lib >=0.6.4
     - {{ pin_compatible('numpy', lower_bound='2.0', upper_bound='3.0') }}
     - pip
     - python
+    - setuptools
   run:
     - python
     - {{ pin_compatible('numpy', lower_bound='2.0', upper_bound='3.0') }}
