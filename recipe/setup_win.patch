@@ -1,0 +1,25 @@
+--- a/setup.py
++++ b/setup.py
+@@ -45,10 +45,24 @@ if platform.system() == 'Windows':
+     include_dirs = [
+         r"c:\ta-lib\c\include",
+         r"c:\Program Files\TA-Lib\include",
+         r"c:\Program Files (x86)\TA-Lib\include",
++        os.path.join(os.environ.get('LIBRARY_PREFIX', ''), 'include'),
+     ]
++    conda_include = os.path.join(os.environ.get('LIBRARY_PREFIX', ''), 'include')
++    if conda_include and os.path.isdir(conda_include):
++        import shutil
++        ta_include_dir = os.path.join(conda_include, 'ta-lib')
++        os.makedirs(ta_include_dir, exist_ok=True)
++        for header in ['ta_abstract.h','ta_common.h','ta_defs.h','ta_func.h','ta_libc.h']:
++            src = os.path.join(conda_include, header)
++            dst = os.path.join(ta_include_dir, header)
++            if os.path.exists(src) and not os.path.exists(dst):
++                shutil.copy2(src, dst)
+     library_dirs = [
+         r"c:\ta-lib\c\lib",
+         r"c:\Program Files\TA-Lib\lib",
+         r"c:\Program Files (x86)\TA-Lib\lib",
++        os.path.join(os.environ.get('LIBRARY_PREFIX', ''), 'lib'),
+     ]
