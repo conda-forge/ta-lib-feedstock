@@ -10,10 +10,10 @@ package:
 
 source:
   - git_url: https://github.com/TA-Lib/ta-lib-python.git
-    git_tag: TA_Lib-{{ version }}
+    git_tag: v{{ version }}
 
 build:
-  number: 0
+  number: 1
   script:
     - export TA_LIBRARY_PATH=$PREFIX/lib                           # [unix]
     - export TA_INCLUDE_PATH=$PREFIX/include                       # [unix]
