@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "0.6.4"
+  version: "0.7.1"
 
 package:
   name: ta-lib
@@ -9,10 +9,14 @@ package:
 
 source:
   - url: https://github.com/TA-Lib/ta-lib-python/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: 7688d3d29b83a0bbe7e73ba2d31c0ddc5c999ffaada504d4c03b4bb5653d3fdb
+    sha256: 732decec9f46f666f36ac55a9d46099bf8ac367dd6ae21cc376d7f4dcea156ed
+    patches:
+      # remove unnecessary dependencies
+      # https://github.com/TA-Lib/ta-lib-python/pull/756
+      - patches/dependencies.patch
 
 build:
-  number: 1
+  number: 0
   script:
     - if: unix
       then:
@@ -30,7 +34,7 @@ build:
         # Also help MSVC find headers/libs via standard INCLUDE/LIB search paths.
         - set "INCLUDE=%SRC_DIR%\include;%LIBRARY_PREFIX%\include;%INCLUDE%"
         - set "LIB=%LIBRARY_PREFIX%\lib;%LIB%"
-    - ${{ PYTHON }} -m pip install . -vv --no-build-isolation
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
   build:

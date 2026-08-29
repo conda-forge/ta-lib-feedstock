@@ -1,0 +1,31 @@
+From 65d491961a22a8df7efd07ab91ec079737da5aa2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Micha=C5=82=20G=C3=B3rny?= <mgorny@gentoo.org>
+Date: Sat, 29 Aug 2026 17:18:13 +0200
+Subject: [PATCH] Remove unnecessary dependencies
+
+Remove the `wheel` build (backend) dependency, since it is not necessary (new versions of setuptools don't need it, old versions pull it automatically).
+
+Remove the `build` runtime dependency. The `build` package is a frontend used during in development workflows, and it neither needs to be installed when installing the package from a wheel, nor it needs to be kept once it's installed.
+---
+ pyproject.toml | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index dce4d7d21..1eda07516 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,5 +1,5 @@
+ [build-system]
+-requires = ["setuptools", "wheel", "Cython", "numpy"]
++requires = ["setuptools", "Cython", "numpy"]
+ build-backend = "setuptools.build_meta"
+ 
+ [project]
+@@ -34,7 +34,6 @@ classifiers = [
+     "Intended Audience :: Financial and Insurance Industry",
+ ]
+ dependencies = [
+-    "build",
+     "numpy",
+ ]
+ requires-python = '>=3.9'
