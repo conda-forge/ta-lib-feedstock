@@ -79,7 +79,7 @@ about:
   summary: Python wrapper for TA-Lib
   license: BSD-2-Clause
   license_file: LICENSE
-  homepage: https://github.com/mrjbq7/ta-lib
+  homepage: https://github.com/ta-lib/ta-lib-python
 
 extra:
   recipe-maintainers:
