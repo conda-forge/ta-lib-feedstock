@@ -64,6 +64,16 @@ tests:
       imports:
         - talib
       pip_check: true
+  - requirements:
+      run:
+        - pytest
+        - pandas
+        - polars
+    files:
+      source:
+        - tests/
+    script:
+      - pytest
 
 about:
   summary: Python wrapper for TA-Lib
