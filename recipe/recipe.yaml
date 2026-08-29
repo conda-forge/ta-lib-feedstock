@@ -8,8 +8,8 @@ package:
   version: ${{ version }}
 
 source:
-  - git: https://github.com/TA-Lib/ta-lib-python.git
-    tag: v${{ version }}
+  - url: https://github.com/TA-Lib/ta-lib-python/archive/refs/tags/v${{ version }}.tar.gz
+    sha256: 7688d3d29b83a0bbe7e73ba2d31c0ddc5c999ffaada504d4c03b4bb5653d3fdb
 
 build:
   number: 1
