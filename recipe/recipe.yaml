@@ -1,0 +1,91 @@
+schema_version: 1
+
+context:
+  version: "0.7.1"
+
+package:
+  name: ta-lib
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/TA-Lib/ta-lib-python/archive/refs/tags/v${{ version }}.tar.gz
+    sha256: 732decec9f46f666f36ac55a9d46099bf8ac367dd6ae21cc376d7f4dcea156ed
+    patches:
+      # remove unnecessary dependencies
+      # https://github.com/TA-Lib/ta-lib-python/pull/756
+      - patches/dependencies.patch
+
+build:
+  number: 0
+  script:
+    - if: unix
+      then:
+        - export TA_LIBRARY_PATH=$PREFIX/lib
+        - export TA_INCLUDE_PATH=$PREFIX/include
+        - export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+      else:
+        # On Windows, TA-Lib C sources include headers as "ta-lib/ta_defs.h".
+        # The libta-lib package installs headers flat under Library/include.
+        # Create a transient include subtree with ta-lib\*.h to satisfy includes.
+        - if not exist "%SRC_DIR%\include\ta-lib" mkdir "%SRC_DIR%\include\ta-lib"
+        - copy /Y "%LIBRARY_PREFIX%\include\ta_*.h" "%SRC_DIR%\include\ta-lib\"
+        - set "TA_INCLUDE_PATH=%SRC_DIR%\include;%LIBRARY_PREFIX%\include"
+        - set "TA_LIBRARY_PATH=%LIBRARY_PREFIX%\lib"
+        # Also help MSVC find headers/libs via standard INCLUDE/LIB search paths.
+        - set "INCLUDE=%SRC_DIR%\include;%LIBRARY_PREFIX%\include;%INCLUDE%"
+        - set "LIB=%LIBRARY_PREFIX%\lib;%LIB%"
+    - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then:
+        - python
+        - cross-python_${{ target_platform }}
+        - cython
+        - numpy
+    - ${{ compiler('c') }}
+    - ${{ stdlib("c") }}
+    - pkg-config
+    - libta-lib >=0.6.4
+  host:
+    - cython
+    - libta-lib >=0.6.4
+    - numpy
+    - pip
+    - python
+    - setuptools
+  run:
+    - python
+    - numpy
+
+tests:
+  - python:
+      imports:
+        - talib
+      pip_check: true
+  - requirements:
+      run:
+        - pytest
+        - pandas
+        - polars
+    files:
+      source:
+        - tests/
+    script:
+      # the test requires exact version match, which seems unnecessary
+      - pytest --deselect tests/test_func.py::test_talib_version
+
+about:
+  summary: Python wrapper for TA-Lib
+  license: BSD-2-Clause
+  license_file: LICENSE
+  homepage: https://github.com/ta-lib/ta-lib-python
+
+extra:
+  recipe-maintainers:
+    - sanurielf
+    - gerrymanoim
+    - llllllllll
+    - richafrank
+    - mgorny
