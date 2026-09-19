@@ -16,7 +16,7 @@ source:
       - patches/dependencies.patch
 
 build:
-  number: 0
+  number: 1
   script:
     - if: unix
       then:
@@ -24,12 +24,7 @@ build:
         - export TA_INCLUDE_PATH=$PREFIX/include
         - export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
       else:
-        # On Windows, TA-Lib C sources include headers as "ta-lib/ta_defs.h".
-        # The libta-lib package installs headers flat under Library/include.
-        # Create a transient include subtree with ta-lib\*.h to satisfy includes.
-        - if not exist "%SRC_DIR%\include\ta-lib" mkdir "%SRC_DIR%\include\ta-lib"
-        - copy /Y "%LIBRARY_PREFIX%\include\ta_*.h" "%SRC_DIR%\include\ta-lib\"
-        - set "TA_INCLUDE_PATH=%SRC_DIR%\include;%LIBRARY_PREFIX%\include"
+        - set "TA_INCLUDE_PATH=%LIBRARY_PREFIX%\include"
         - set "TA_LIBRARY_PATH=%LIBRARY_PREFIX%\lib"
         # Also help MSVC find headers/libs via standard INCLUDE/LIB search paths.
         - set "INCLUDE=%SRC_DIR%\include;%LIBRARY_PREFIX%\include;%INCLUDE%"
