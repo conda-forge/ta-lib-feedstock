@@ -10,10 +10,6 @@ package:
 source:
   - url: https://github.com/TA-Lib/ta-lib-python/archive/refs/tags/v${{ version }}.tar.gz
     sha256: f171822707b8e0b0bc2142077ed9d2e1853dd58be3aed99d3f643d8e556e92e2
-    patches:
-      # remove unnecessary dependencies
-      # https://github.com/TA-Lib/ta-lib-python/pull/756
-      - patches/dependencies.patch
 
 build:
   number: 0
