@@ -1,7 +1,7 @@
 schema_version: 1
 
 context:
-  version: "0.8.1"
+  version: "0.8.2"
 
 package:
   name: ta-lib
@@ -9,7 +9,7 @@ package:
 
 source:
   - url: https://github.com/TA-Lib/ta-lib-python/archive/refs/tags/v${{ version }}.tar.gz
-    sha256: f171822707b8e0b0bc2142077ed9d2e1853dd58be3aed99d3f643d8e556e92e2
+    sha256: 5e458864d6d86e687923268fe0c7343c5aeb826950f0177cd4d37f86fa3d449d
 
 build:
   number: 0
