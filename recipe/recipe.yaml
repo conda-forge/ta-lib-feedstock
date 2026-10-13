@@ -38,10 +38,9 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ stdlib("c") }}
     - pkg-config
-    - libta-lib >=${{ version }}
   host:
     - cython
-    - libta-lib >=${{ version }}
+    - libta-lib >=0.8.1
     - numpy
     - pip
     - python
