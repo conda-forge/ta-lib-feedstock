@@ -19,12 +19,16 @@ build:
         - export TA_LIBRARY_PATH=$PREFIX/lib
         - export TA_INCLUDE_PATH=$PREFIX/include
         - export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+        # force cythonizing again, to fix compat with py3.11
+        - rm talib/_ta_lib.c
       else:
         - set "TA_INCLUDE_PATH=%LIBRARY_PREFIX%\include"
         - set "TA_LIBRARY_PATH=%LIBRARY_PREFIX%\lib"
         # Also help MSVC find headers/libs via standard INCLUDE/LIB search paths.
         - set "INCLUDE=%SRC_DIR%\include;%LIBRARY_PREFIX%\include;%INCLUDE%"
         - set "LIB=%LIBRARY_PREFIX%\lib;%LIB%"
+        # force cythonizing again, to fix compat with py3.11
+        - del talib\_ta_lib.c
     - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 requirements:
